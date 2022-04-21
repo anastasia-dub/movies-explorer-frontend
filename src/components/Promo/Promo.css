@@ -1,0 +1,149 @@
+.promo {
+  box-sizing: border-box;
+  background-color: #F3C1F8;
+}
+
+.promo__container {
+  max-width: 1280px;
+  min-height: 574px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 70px;
+}
+
+.promo__text {
+  margin-right: 20px;
+}
+
+.promo__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 75px 0 85px;
+}
+
+.promo__title {
+  max-width: 730px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 50px;
+  line-height: 58px;
+  color: #000000;
+  text-align: left;
+  margin: 0 auto;
+}
+.promo__subtitle {
+  font-family: 'Inter', Arial, sans-serif;
+  max-width: 310px;
+  margin: 0;
+  padding-top: 36px;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 16px;
+  opacity: 0.5;
+
+}
+
+.promo__button {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+  width: 129px;
+  color: #000000;
+  opacity: 1;
+  transition: opacity .3s ease;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 10px 0;
+  background: #F3C1F8;
+  border-radius: 3px;
+  border: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo__image {
+  width: 310px;
+  height: 304px;
+}
+
+.promo__button:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 1023px) {
+  .promo__container {
+    min-height: 850px;
+    padding: 0 45px;
+    align-items: center;
+  }
+
+  .promo__title {
+    max-width: 680px;
+    font-size: 40px;
+    line-height: 50px;
+    text-align: center;
+    padding-top: 48px;
+
+  }
+  .promo__subtitle {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 22px;
+    width: 260px;
+  }
+  .promo__content {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 140px 0 92px;
+  }
+  .promo__image {
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .promo__container {
+    min-height: 600px;
+    padding: 0 10px;
+  }
+
+  .promo__title {
+    width: 300px;
+    font-size: 30px;
+    line-height: 38px;
+    padding-top: 44px;
+    letter-spacing: -0.04em;
+  }
+
+  .promo__subtitle {
+    padding-top: 24px;
+  }
+
+  .promo__content {
+    padding: 70px 0 80px;
+
+  }
+  .promo__image {
+    width: 210px;
+    height: 206px;
+  }
+
+  .promo__button {
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (max-width: 319px) {
+  .promo__title {
+    width: 100%;
+    font-size: 20px;
+  }
+}
