@@ -27,6 +27,7 @@
   color: #A0A0A0;
   box-sizing: border-box;
   margin: 0 auto;
+  padding-top: 9px;
   text-align: left;
 }
 .movies-card-article__container {
