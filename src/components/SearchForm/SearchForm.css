@@ -39,6 +39,7 @@
 
 .search-form__text-input:focus {
   outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
 }
 
 .search-form__button {
@@ -63,6 +64,7 @@
 
 .search-form__button:focus {
   outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
 }
 
 .search-form__shorts-wrapper {

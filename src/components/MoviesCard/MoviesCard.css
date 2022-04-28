@@ -51,6 +51,11 @@
   cursor: pointer;
 }
 
+.movies-card-article__favorite-button:focus{
+  outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
+}
+
 .movies-card-article__image {
   width: 100%;
   height: 100%;

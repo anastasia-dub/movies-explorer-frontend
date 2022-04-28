@@ -10,8 +10,9 @@ import MenuButton from '../MenuButton/MenuButton';
 
 function Header(props) {
   return (
-    <header
-      className="header"
+    <div className={`header${props.absolute ? ' header_absolute' : ''}`}>
+        <header
+      className="header-content"
     >
       <LogoLink />
         {props.loggedIn ? (
@@ -28,6 +29,7 @@ function Header(props) {
           />
       )}
     </header>
+    </div>
   );
 }
 

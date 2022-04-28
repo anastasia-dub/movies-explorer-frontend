@@ -21,7 +21,7 @@ function Portfolio() {
     {
       id: 3,
       text: 'Одностраничное приложение',
-      href: 'https://github.com/anastasia-dub/mesto-react-express',
+      href: 'https://github.com/anastasia-dub/react-mesto-api-full',
       iconSpan: '↗',
     },
   ];

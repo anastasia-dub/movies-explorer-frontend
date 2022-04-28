@@ -1,4 +1,4 @@
-.header {
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,15 +8,22 @@
   margin: 0 auto;
 }
 
+.header_absolute {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
 @media screen and (max-width: 1023px) {
-  .header {
+  .header-content {
     padding-left: 30px;
     padding-right: 30px;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .header {
+  .header-content {
     padding-left: 14px;
     padding-right: 14px;
   }

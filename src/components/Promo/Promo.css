@@ -1,6 +1,7 @@
 .promo {
   box-sizing: border-box;
   background-color: #F3C1F8;
+  padding-top: 74px;
 }
 
 .promo__container {

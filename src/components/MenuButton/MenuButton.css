@@ -2,6 +2,11 @@
   display: none;
 }
 
+.menu-button:focus {
+  outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
+}
+
 @media screen and (max-width: 1023px) {
   .menu-button {
     display: block;

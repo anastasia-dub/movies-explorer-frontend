@@ -9,8 +9,6 @@ import ArticleAbout from '../ArticleAbout/ArticleAbout';
 import Chart from '../Chart/Chart';
 
 function AboutProject() {
-  const ABOUT_PROJECT_TITLE = 'О проекте';
-
   const ABOUT_PROJECT_ARTICLES_DATA = [
     {
       id: 1,
@@ -53,34 +51,25 @@ function AboutProject() {
     />
   ));
 
-  const ABOUT_PROJECT_ARTICLE_STYLES = {
-    article: 'about-project-article',
-    articleHeader: 'about-project-article__header',
-    articleItemsSection: 'about-page-arcticle__items-section',
-    articleSection: 'about-page-arcticle__section',
-  };
-
-  const TECHS_ARTICLE_ID = 'about-project';
-
   return (
     <MainArticle
-      id={TECHS_ARTICLE_ID}
-      className={ABOUT_PROJECT_ARTICLE_STYLES.article}
+      id='about-project'
+      className='about-project-article'
     >
       <MainArticle.Header
-        className={ABOUT_PROJECT_ARTICLE_STYLES.articleHeader}
+        className='about-project-article__header'
       >
         <Title
-          title={ABOUT_PROJECT_TITLE}
+          title='О проекте'
         />
       </MainArticle.Header>
       <MainArticle.ArticlesSection
-        className={ABOUT_PROJECT_ARTICLE_STYLES.articleItemsSection}
+        className='about-page-arcticle__items-section'
       >
         {articlesAboutMarkup}
       </MainArticle.ArticlesSection>
       <MainArticle.Section
-        className={ABOUT_PROJECT_ARTICLE_STYLES.articleSection}
+        className='about-page-arcticle__section'
       >
         <Chart
           data={CHART_DATA}

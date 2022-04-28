@@ -20,6 +20,11 @@
   opacity: .7;
 }
 
+.profile-edit-button:focus{
+  outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
+}
+
 @media screen and (max-width: 767px) {
   .profile-edit-button {
     font-size: 12px;

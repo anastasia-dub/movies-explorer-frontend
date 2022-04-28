@@ -26,6 +26,11 @@
   background: rgba(249, 249, 249, .8);
 }
 
+.show-more__button:focus{
+  outline: none;
+  box-shadow: #F3C1F8 0 0 0 3px;
+}
+
 @media screen and (max-width: 1023px) {
   .show-more {
     padding-left: 30px;

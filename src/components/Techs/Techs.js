@@ -9,8 +9,6 @@ import Title from '../Title/Title';
 import TechsList from '../TechsList/TechsList';
 
 function Techs() {
-  const TECHS_TITLE_TEXT = 'Технологии';
-
   const TECHS_ARTICLES_DATA = [
     {
       id: 1,
@@ -27,38 +25,31 @@ function Techs() {
     />
   ));
 
-  const TECHS_ARTICLE_STYLES = {
-    article: 'techs-article',
-    articleHeader: 'techs-article__header',
-    articleItemsSection: 'techs-article__items-section',
-    articleSection: 'techs-article__section',
-  };
-
-  const TECHS_ARTICLE_ID = 'technologies';
-
   return (
-    <MainArticle
-      id={TECHS_ARTICLE_ID}
-      className={TECHS_ARTICLE_STYLES.article}
-    >
+    <div className='techs'>
+      <MainArticle
+      id='technologies'
+      className='techs-article'
+      >
       <MainArticle.Header
-        className={TECHS_ARTICLE_STYLES.articleHeader}
+        className='techs-article__header'
       >
         <Title
-          title={TECHS_TITLE_TEXT}
+          title='Технологии'
         />
       </MainArticle.Header>
       <MainArticle.ArticlesSection
-        className={TECHS_ARTICLE_STYLES.articleItemsSection}
+        className='techs-article__items-section'
       >
         {articlesMarkup}
       </MainArticle.ArticlesSection>
       <MainArticle.Section
-        className={TECHS_ARTICLE_STYLES.articleSection}
+        className='techs-article__section'
       >
         <TechsList />
       </MainArticle.Section>
-    </MainArticle>
+      </MainArticle>
+    </div>
   );
 }
 

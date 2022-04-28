@@ -27,36 +27,24 @@ function AuthForm({
   formIsValid,
   authErrorText,
 }) {
-  const FORM_STYLE_SETTINGS = {
-    form: 'auth-form',
-    formTitle: 'auth-form__title',
-    formInputFieldset: 'auth-form__input-fieldset',
-    inputContainer: 'auth-form__input-container',
-    buttonContainer: 'auth-form__button-container',
-    input: 'auth-form__input',
-    label: 'auth-form__input-label',
-    errorText: 'auth-form__input-error',
-    submitButton: 'auth-form__submit-button',
-  };
-
   const formInputsMarkup = inputsData.map((item) => (
     <div
       key={item.key}
-      className={FORM_STYLE_SETTINGS.inputContainer}
+      className='auth-form__input-container'
     >
       <label
-        className={FORM_STYLE_SETTINGS.label}
+        className='auth-form__input-label'
       >
         {item.label}
         <InputField
-          className={FORM_STYLE_SETTINGS.input}
+          className='auth-form__input'
           settings={item}
           onChange={onChange}
           value={values[item.name]}
         />
       </label>
       <span
-        className={FORM_STYLE_SETTINGS.errorText}
+        className='auth-form__input-error'
         aria-live="polite"
       >
         {errors[item.name]}
@@ -67,11 +55,11 @@ function AuthForm({
   return (
     <form
       onSubmit={onSubmit}
-      className={FORM_STYLE_SETTINGS.form}
+      className='auth-form'
       noValidate
     >
       <div
-        className={FORM_STYLE_SETTINGS.formTitle}
+        className='auth-form__title'
       >
         <LogoLink />
         <FormTitle
@@ -79,7 +67,7 @@ function AuthForm({
         />
       </div>
       <fieldset
-        className={FORM_STYLE_SETTINGS.formInputFieldset}
+        className='auth-form__input-fieldset'
       >
         {formInputsMarkup}
         <AuthError
@@ -87,12 +75,12 @@ function AuthForm({
         />
       </fieldset>
       <div
-        className={FORM_STYLE_SETTINGS.buttonContainer}
+        className='auth-form__button-container'
       >
         <SubmitButton
           disabled={!formIsValid}
           settings={submitButtonSettings}
-          className={FORM_STYLE_SETTINGS.submitButton}
+          className='auth-form__submit-button'
         />
         <FormAuthQuestion
           settings={formAuthQuestionSettings}

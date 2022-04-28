@@ -1,8 +1,12 @@
+.techs {
+  background-color: #F5F5F5;
+}
+
 .techs-article {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 100px 70px 50px 70px;
-  background-color: #F5F5F5;
+  max-width: 1280px;
 }
 
 .techs-article__header {
@@ -22,7 +26,6 @@
 @media screen and (max-width: 767px) {
   .techs-article {
     padding: 70px 18px 35px 18px;
-    background-color: #FFFFFF;
   }
 
   .techs-article__header {

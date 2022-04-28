@@ -4,6 +4,7 @@ import {
   Switch,
   useRouteMatch,
   useHistory,
+  useLocation,
 } from 'react-router-dom';
 
 import Header from '../Header/Header';
@@ -36,6 +37,7 @@ function App() {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
 
   const history = useHistory();
+  const { pathname } = useLocation();
 
   const handleSignup = () => {
     setLoggedIn(true);
@@ -82,6 +84,7 @@ function App() {
           onSignup={handleSignup}
           onSignin={handleSignin}
           onOpenMenu={setOpenMenu}
+          absolute={pathname === '/'}
         />
       )}
       <Switch>

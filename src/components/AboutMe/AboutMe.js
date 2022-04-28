@@ -11,8 +11,6 @@ import Portfolio from '../Portfolio/Portfolio';
 import AboutMePortrait from '../../images/AboutMe/about-me-portrait.jpg';
 
 function AboutMe() {
-  const ABOUT_ME_TITLE = 'Студентка';
-
   const ABOUT_ME_ARTICLES_DATA = [
     {
       id: 1,
@@ -42,15 +40,6 @@ function AboutMe() {
     },
   ];
 
-  const ABOUT_ME_ARTICLE_STYLES = {
-    article: 'about-me-article',
-    articleHeader: 'about-me-article__header',
-    articleItemsSection: 'about-me-article__items-section',
-    articleSection: 'about-me-article__section',
-  };
-
-  const ABOUT_ME_ARTICLE_ID = 'student';
-
   const articlesMeMarkup = ABOUT_ME_ARTICLES_DATA.map((item) => (
     <ArticleAboutMe
       key={item.id}
@@ -65,23 +54,23 @@ function AboutMe() {
 
   return (
     <MainArticle
-      id={ABOUT_ME_ARTICLE_ID}
-      className={ABOUT_ME_ARTICLE_STYLES.article}
+      id='student'
+      className='about-me-article'
     >
       <MainArticle.Header
-        className={ABOUT_ME_ARTICLE_STYLES.articleHeader}
+        className='about-me-article__header'
       >
         <Title
-          title={ABOUT_ME_TITLE}
+          title='Студентка'
         />
       </MainArticle.Header>
       <MainArticle.ArticlesSection
-        className={ABOUT_ME_ARTICLE_STYLES.articleItemsSection}
+        className='about-me-article__items-section'
       >
         {articlesMeMarkup}
       </MainArticle.ArticlesSection>
       <MainArticle.Section
-        className={ABOUT_ME_ARTICLE_STYLES.articleSection}
+        className='about-me-article__section'
       >
         <Portfolio />
       </MainArticle.Section>
