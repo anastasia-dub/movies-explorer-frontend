@@ -4,13 +4,9 @@ function ProfileEditButton({
   title,
   onClick,
 }) {
-  const STYLE_SETTINGS = {
-    button: 'profile-edit-button',
-  };
-
   return (
     <button
-      className={STYLE_SETTINGS.button}
+      className='profile-edit-button'
       onClick={onClick}
     >
       {title}

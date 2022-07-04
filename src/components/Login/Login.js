@@ -4,7 +4,7 @@ import AuthForm from '../AuthForm/AuthForm';
 
 import useFormWithValidation from '../../hooks/useFormValidation';
 
-function Login() {
+function Login({ signInHandler, error }) {
   const {
     values,
     errors,
@@ -15,7 +15,7 @@ function Login() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.table(values);
+    signInHandler(values.email, values.password);
     resetForm();
   };
 
@@ -61,8 +61,6 @@ function Login() {
 
   const TITLE_TEXT = 'Рады видеть!';
 
-  const AUTH_ERROR_TEXT = 'При авторизации произошла ошибка. Токен не передан или передан не в том формате.';
-
   const LOGIN_STYLE_SETTINGS = {
     main: 'login',
     header: 'register__header',
@@ -78,13 +76,13 @@ function Login() {
         inputsData={INPUTS_DATA}
         onChange={handleChange}
         values={values}
+        error={error}
         errors={errors}
         onSubmit={handleSubmit}
         submitButtonSettings={SUBMIT_BUTTON_SETTINGS}
         formAuthQuestionSettings={FORM_AUTH_QUESTION_SETTINGS}
         routeLinkSettings={ROUTE_LINK_SETTINGS}
         formIsValid={isValid}
-        authErrorText={AUTH_ERROR_TEXT}
       />
     </main>
   );

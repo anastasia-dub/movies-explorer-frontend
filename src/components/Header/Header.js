@@ -18,10 +18,7 @@ function Header(props) {
         {props.loggedIn ? (
             <Navigation />
         ) : (
-            <AuthNavigation
-              onSignup={props.onSignup}
-              onSignin={props.onSignin}
-            />
+            <AuthNavigation />
         )}
       {props.loggedIn && (
           <MenuButton

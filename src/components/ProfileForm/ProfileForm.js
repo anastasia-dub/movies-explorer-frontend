@@ -12,6 +12,8 @@ import ProfileEditButton from '../ProfileEditButton/ProfileEditButton';
 
 import ProfileSignoutButton from '../ProfileSignOutButton/ProfileSignOutButton';
 
+import Preloader from '../Preloader/Preloader';
+
 function ProfileForm({
   titleText,
   inputsData,
@@ -27,37 +29,27 @@ function ProfileForm({
   profileEditButtonSettings,
   profileSignoutButtonSettings,
   onSignOut,
+  isLoadingData,
+  isUpdateUserProfileError,
 }) {
-  const FORM_STYLE_SETTINGS = {
-    form: 'profile-form',
-    formTitle: 'profile-form__title',
-    formInputFieldset: 'profile-form__input-fieldset',
-    inputContainer: 'profile-form__input-container',
-    container: 'profile-form__container',
-    input: 'profile-form__input',
-    label: 'profile-form__input-label',
-    errorText: 'profile-form__input-error',
-    submitButton: 'profile-form__submit-button',
-  };
-
   const formInputsMarkup = inputsData.map((item) => (
     <div
       key={item.key}
-      className={FORM_STYLE_SETTINGS.inputContainer}
+      className='profile-form__input-container'
     >
       <label
-        className={FORM_STYLE_SETTINGS.label}
+        className='profile-form__input-label'
       >
         {item.label}
         <InputField
-          className={FORM_STYLE_SETTINGS.input}
+          className='profile-form__input'
           settings={item}
           onChange={onChange}
           value={values[item.name]}
         />
       </label>
       <span
-        className={FORM_STYLE_SETTINGS.errorText}
+        className='profile-form__input-error'
         aria-live="polite"
       >
         {errors[item.name]}
@@ -68,38 +60,41 @@ function ProfileForm({
   return (
     <form
       onSubmit={onSubmit}
-      className={FORM_STYLE_SETTINGS.form}
+      className='profile-form'
       noValidate
     >
       <div
-        className={FORM_STYLE_SETTINGS.formTitle}
+        className='profile-form__title'
       >
         <FormTitle
           titleText={titleText}
         />
       </div>
       <fieldset
-        className={FORM_STYLE_SETTINGS.formInputFieldset}
-        disabled={!isEdited}
+        className='profile-form__input-fieldset'
+        disabled={!isEdited || isLoadingData}
       >
         {formInputsMarkup}
       </fieldset>
       <div
-        className={FORM_STYLE_SETTINGS.container}
+        className='profile-form__container'
       >
+        {isUpdateUserProfileError && (
+          <ProfileUpdateError
+            errorText={profileUpdateErrorText}
+          />
+        )}
         {isEdited ? (
-          <>
-            <ProfileUpdateError
-              errorText={profileUpdateErrorText}
-            />
-            <SubmitButton
-              disabled={!formIsValid}
-              settings={submitButtonSettings}
-              className={FORM_STYLE_SETTINGS.submitButton}
-            />
-          </>
+          <SubmitButton
+            disabled={!formIsValid}
+            settings={submitButtonSettings}
+            className='profile-form__submit-button'
+          />
         ) : (
           <>
+            {isLoadingData && (
+              <Preloader />
+            )}
             <ProfileEditButton
               onClick={onToggleEditableProfile}
               title={profileEditButtonSettings.title}
