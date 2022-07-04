@@ -11,6 +11,19 @@
   justify-items: center;
 }
 
+.movies-card-list-content {
+  width: 100%;
+}
+
+.movies-card-list-not-found {
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 18px;
+}
+
 @media screen and (max-width: 1023px) {
   .movies-card-list {
     padding-left: 30px;

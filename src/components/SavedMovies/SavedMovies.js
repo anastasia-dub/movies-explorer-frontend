@@ -6,49 +6,62 @@ import SearchForm from '../SearchForm/SearchForm';
 
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-import MovieCardImage from '../../images/MoviesCard/movie-card-image.png';
-import MovieCardImageTwo from '../../images/MoviesCard/movie-card-image2.png';
+const getError = (loadingError, isEmptyListError) => {
+  if (loadingError) {
+    return loadingError;
+  }
 
-function SavedMovies() {
+  if (isEmptyListError) {
+    return 'Ничего не найдено';
+  }
+
+  return null;
+};
+
+function SavedMovies({
+  onDeleteSavedMovie,
+  savedMovies,
+  onSubmit,
+  loadingError,
+  onShortMoviesCheckboxClick,
+}) {
+  const [isSearchTouched, setIsSearchTouched] = React.useState(false);
+  const isEmptyListError = isSearchTouched && savedMovies.length === 0;
+
+  const handleSubmit = (data) => {
+    onSubmit(data);
+
+    if (!isSearchTouched) {
+      setIsSearchTouched(true);
+    }
+  };
+
+  const error = React.useMemo(() => {
+    return getError(loadingError, isEmptyListError);
+  }, [loadingError, isEmptyListError]);
+
   const location = useLocation();
-
-  const MOVIES_CARD_LIST_DATA = [
-    {
-      id: 1,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: true,
-    },
-    {
-      id: 2,
-      title: '33 слова о дизайне»',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImageTwo,
-      isMarked: false,
-      isShortFilm: false,
-    },
-    {
-      id: 5,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: false,
-    },
-  ];
 
   return (
     <main>
-      <SearchForm />
-      <MoviesCardList
-        data={MOVIES_CARD_LIST_DATA}
-        locationPathname={location.pathname}
+      <SearchForm
+        onSubmit={handleSubmit}
+        onShortMoviesCheckboxClick={onShortMoviesCheckboxClick}
       />
+      {error && (
+        <div
+          className="movies-card-list-error"
+        >
+          {error}
+        </div>
+      )}
+      {!error && (
+        <MoviesCardList
+          data={savedMovies}
+          locationPathname={location.pathname}
+          onDeleteSavedMovie={onDeleteSavedMovie}
+        />
+      )}
     </main>
   );
 }

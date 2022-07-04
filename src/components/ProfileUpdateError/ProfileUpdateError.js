@@ -1,13 +1,9 @@
 import React from 'react';
 
 function ProfileUpdateError({ errorText }) {
-  const STYLE_SETTINGS = {
-    text: 'profile-update-error',
-  };
-
   return (
     <span
-      className={STYLE_SETTINGS.text}
+      className='profile-update-error'
       aria-live="polite"
     >
       {errorText}
