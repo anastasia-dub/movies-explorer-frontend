@@ -4,7 +4,11 @@ import { useLocation } from 'react-router-dom';
 
 import SearchForm from '../SearchForm/SearchForm';
 
+import Preloader from '../Preloader/Preloader';
+
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+
+import useSearchMovies from '../../effects/useSearchMovies';
 
 const getError = (loadingError, isEmptyListError) => {
   if (loadingError) {
@@ -21,15 +25,22 @@ const getError = (loadingError, isEmptyListError) => {
 function SavedMovies({
   onDeleteSavedMovie,
   savedMovies,
-  onSubmit,
   loadingError,
-  onShortMoviesCheckboxClick,
 }) {
   const [isSearchTouched, setIsSearchTouched] = React.useState(false);
   const isEmptyListError = isSearchTouched && savedMovies.length === 0;
 
+  const {
+    query,
+    filterMovies,
+    isLoading,
+    isShowOnlyShortMovies,
+    handleSearch,
+    handleShortMoviesCheckboxClick,
+  } = useSearchMovies({ movies: savedMovies, noFilterEmpty: true });
+
   const handleSubmit = (data) => {
-    onSubmit(data);
+    handleSearch(data);
 
     if (!isSearchTouched) {
       setIsSearchTouched(true);
@@ -45,9 +56,14 @@ function SavedMovies({
   return (
     <main>
       <SearchForm
+        query={query}
         onSubmit={handleSubmit}
-        onShortMoviesCheckboxClick={onShortMoviesCheckboxClick}
+        onShortMoviesCheckboxClick={handleShortMoviesCheckboxClick}
+        isShowOnlyShortMovies={isShowOnlyShortMovies}
       />
+       {isLoading && (
+        <Preloader />
+       )}
       {error && (
         <div
           className="movies-card-list-error"
@@ -57,7 +73,7 @@ function SavedMovies({
       )}
       {!error && (
         <MoviesCardList
-          data={savedMovies}
+          data={filterMovies}
           locationPathname={location.pathname}
           onDeleteSavedMovie={onDeleteSavedMovie}
         />

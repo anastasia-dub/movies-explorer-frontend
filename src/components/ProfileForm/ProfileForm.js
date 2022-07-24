@@ -31,6 +31,7 @@ function ProfileForm({
   onSignOut,
   isLoadingData,
   isUpdateUserProfileError,
+  editIsSuccess,
 }) {
   const formInputsMarkup = inputsData.map((item) => (
     <div
@@ -83,6 +84,9 @@ function ProfileForm({
           <ProfileUpdateError
             errorText={profileUpdateErrorText}
           />
+        )}
+        {editIsSuccess && (
+          <div className='profile-form__caption'>Изменения сохранены</div>
         )}
         {isEdited ? (
           <SubmitButton

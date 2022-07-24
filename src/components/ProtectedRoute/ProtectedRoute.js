@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 function ProtectedRoute({
   component: Component,
   loggedIn,
-  redirectTo = '/signin',
+  redirectTo = '/',
   ...props
 }) {
   return (

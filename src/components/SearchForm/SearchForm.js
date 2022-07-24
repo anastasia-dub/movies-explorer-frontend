@@ -9,13 +9,15 @@ import SubmitButton from '../SubmitButton/SubmitButton';
 import useFormWithValidation from '../../hooks/useFormValidation';
 
 function SearchForm({
+  query,
   onSubmit,
   onShortMoviesCheckboxClick,
+  isShowOnlyShortMovies,
 }) {
   const {
     values,
     handleChange,
-  } = useFormWithValidation({});
+  } = useFormWithValidation({ defaultValues: { search: query } });
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -39,19 +41,24 @@ function SearchForm({
   };
 
   return (
-    <><form
-      className='search-form'
-      onSubmit={handleSubmit}
-    >
-      <InputField
-        settings={SEARCH_TEXT_INPUT_SETTINGS}
-        className='search-form__text-input'
-        onChange={handleChange}
-        value={values.search} />
-      <SubmitButton
-        className='search-form__submit-button'
-        settings={SUBMIT_BUTTON_SETTINGS} />
-    </form><FilterCheckbox onClick={onShortMoviesCheckboxClick} /></>
+    <>
+      <form
+        className='search-form'
+        onSubmit={handleSubmit}
+      >
+        <InputField
+          settings={SEARCH_TEXT_INPUT_SETTINGS}
+          className='search-form__text-input'
+          onChange={handleChange}
+          value={values.search} />
+        <SubmitButton
+          className='search-form__submit-button'
+          settings={SUBMIT_BUTTON_SETTINGS} />
+      </form>
+      <FilterCheckbox
+        onClick={onShortMoviesCheckboxClick}
+        checked={isShowOnlyShortMovies} />
+    </>
   );
 }
 

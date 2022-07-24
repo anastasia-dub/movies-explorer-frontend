@@ -6,6 +6,55 @@ import useFormWithValidation from '../../hooks/useFormValidation';
 
 import REGISTRATION_ERRORS_TEXTS from '../../constants/registration-errors-texts';
 
+const INPUTS_DATA = [
+  {
+    key: 1,
+    type: 'text',
+    id: 'name',
+    label: 'Имя',
+    placeholder: 'Имя',
+    name: 'name',
+  },
+  {
+    key: 2,
+    inputClassName: '',
+    labelClassName: '',
+    type: 'email',
+    id: 'email',
+    label: 'E-mail',
+    placeholder: 'E-mail',
+    name: 'email',
+  },
+  {
+    key: 3,
+    inputClassName: '',
+    labelClassName: '',
+    type: 'password',
+    id: 'password',
+    label: 'Пароль',
+    placeholder: 'Пароль',
+    name: 'password',
+  },
+];
+
+const SUBMIT_BUTTON_SETTINGS = {
+  type: 'submit',
+  title: 'Зарегистрироваться',
+};
+
+const FORM_AUTH_QUESTION_SETTINGS = {
+  questionText: 'Уже зарегистрированы? ',
+};
+
+const ROUTE_LINK_SETTINGS = {
+  linkTitle: 'Войти',
+  linkPath: '/signin',
+};
+
+const REGISTER_STYLE_SETTINGS = {
+  main: 'register',
+};
+
 function Register({
   regResStatus,
   isLoadingSignup,
@@ -15,7 +64,40 @@ function Register({
   const [isRegistrationError, setIsRegistrationError] = React.useState(false);
   const [registrationErrorText, setRegistrationErrorText] = React.useState('');
 
-  const formWithValidation = useFormWithValidation({});
+  const formWithValidation = useFormWithValidation({
+    validators: {
+      name: [
+        {
+          type: 'required',
+        },
+        {
+          type: 'regexp',
+          mask: /^[a-zA-Z -]{2,30}$/,
+          error: 'Поле name может содержать только латиницу, пробел или дефис: a-zA-Z -',
+        },
+      ],
+      email: [
+        {
+          type: 'required',
+        },
+        {
+          type: 'regexp',
+          mask: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          error: 'Введите корректный email',
+        },
+      ],
+      password: [
+        {
+          type: 'required',
+        },
+        {
+          type: 'range',
+          min: 8,
+          max: 30,
+        },
+      ],
+    },
+  });
 
   const {
     values,
@@ -29,65 +111,8 @@ function Register({
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log('handleSubmit', values);
     signUpHandler(name, email, password);
     resetForm();
-  };
-
-  const INPUTS_DATA = [
-    {
-      key: 1,
-      type: 'text',
-      id: 'name',
-      label: 'Имя',
-      placeholder: 'Имя',
-      name: 'name',
-      required: true,
-      regexp: '[a-zA-Z -]{2,30}',
-      customErrorMessage: 'Поле name может содержать только латиницу, пробел или дефис: a-zA-Z -',
-    },
-    {
-      key: 2,
-      inputClassName: '',
-      labelClassName: '',
-      type: 'email',
-      id: 'email',
-      label: 'E-mail',
-      placeholder: 'E-mail',
-      name: 'email',
-      required: true,
-    },
-    {
-      key: 3,
-      inputClassName: '',
-      labelClassName: '',
-      type: 'password',
-      id: 'password',
-      label: 'Пароль',
-      placeholder: 'Пароль',
-      name: 'password',
-      minLength: 8,
-      maxLength: 30,
-      required: true,
-    },
-  ];
-
-  const SUBMIT_BUTTON_SETTINGS = {
-    type: 'submit',
-    title: 'Зарегистрироваться',
-  };
-
-  const FORM_AUTH_QUESTION_SETTINGS = {
-    questionText: 'Уже зарегистрированы? ',
-  };
-
-  const ROUTE_LINK_SETTINGS = {
-    linkTitle: 'Войти',
-    linkPath: '/signin',
-  };
-
-  const REGISTER_STYLE_SETTINGS = {
-    main: 'register',
   };
 
   const errorHandler = () => {

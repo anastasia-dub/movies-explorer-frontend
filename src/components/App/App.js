@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Route, Switch, useHistory, useLocation,
+  Route, Switch, useHistory, useLocation, Redirect,
 } from 'react-router-dom';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
@@ -17,31 +17,15 @@ import { getAllMovies } from '../../utils/MoviesApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import './App.css';
 
-const SHORT_MOVIE_DURATION = 40;
-
-const searchFilter = (data, searchQuery, params) => {
-  console.log('searchQuery', searchQuery);
-  let filteredData = data;
-
-  if (params.isShowOnlyShortMovies) {
-    filteredData = filteredData.filter((item) => item.duration <= SHORT_MOVIE_DURATION);
-  }
-
-  if (searchQuery) {
-    const regex = new RegExp(searchQuery, 'gi');
-    return filteredData.filter((item) => regex.test(item.nameRU) || regex.test(item.nameEN));
-  }
-  return params && params.noFilterEmpty ? filteredData : [];
-};
-
 function App() {
+  const history = useHistory();
+  const { pathname } = useLocation();
+
   const [isSignUpError, setIsSignUpError] = React.useState(false);
   const [signInErrorMessage, setSignInErrorMessage] = React.useState(false);
-  const [isSearchEmptyError, setIsSearchEmptyError] = React.useState(false);
   const [editIsSuccess, setEditIsSuccess] = React.useState(false);
   const [editIsFailed, setEditIsFailed] = React.useState(false);
 
-  const [isLoading, setIsLoading] = React.useState(false);
   const [loadingError, setLoadingError] = React.useState('');
 
   const [currentUser, setCurrentUser] = React.useState({});
@@ -51,10 +35,6 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [prevAllMovies, setPrevAllMovies] = React.useState([allMovies]);
   const [prevSavedMovies, setPrevSavedMovies] = React.useState(savedMovies);
-  const [filterMovies, setFilterMovies] = React.useState([]);
-  const [filterSavedMovies, setFilterSavedMovies] = React.useState([]);
-  const [query, setQuery] = React.useState('');
-  const [isShowOnlyShortMovies, setIsShowOnlyShortMovies] = React.useState(false);
 
   useEffect(() => {
     const isAllMoviesLoaded = prevAllMovies.length === 0 && allMovies.length > 0;
@@ -84,18 +64,6 @@ function App() {
       setPrevAllMovies(allMovies);
     }
   }, [allMovies, prevAllMovies]);
-
-  useEffect(() => {
-    const filterData = searchFilter(allMovies, query, { isShowOnlyShortMovies });
-    setFilterMovies(filterData);
-  }, [allMovies, query, isShowOnlyShortMovies]);
-
-  const history = useHistory();
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    setQuery('');
-  }, [pathname]);
 
   const getCurrentUser = () => {
     const token = localStorage.getItem('token');
@@ -171,8 +139,6 @@ function App() {
 
     setAllMovies([]);
     setSavedMovies([]);
-    setFilterMovies([]);
-    setFilterSavedMovies([]);
 
     history.push('/');
   };
@@ -232,10 +198,6 @@ function App() {
       });
   };
 
-  const handleShortMoviesCheckboxClick = React.useCallback(e => {
-    setIsShowOnlyShortMovies(e.target.checked);
-  }, [setIsShowOnlyShortMovies]);
-
   useEffect(() => {
     if (loggedIn) {
       getAllMoviesData();
@@ -244,21 +206,6 @@ function App() {
   }, [loggedIn]);
 
   const isMovieAdded = (movie) => savedMovies.some((item) => item.id === movie.id);
-
-  const searchHandler = ({ search }) => {
-    if (typeof search === 'undefined' || search.length === 0) {
-      setIsSearchEmptyError(true);
-      return;
-    }
-
-    setIsSearchEmptyError(false);
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setQuery(search);
-      setIsLoading(false);
-    }, 600);
-  };
 
   const addToBookmarks = (movie) => {
     mainApi
@@ -286,14 +233,6 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    setFilterSavedMovies(searchFilter(
-      savedMovies,
-      query,
-      { noFilterEmpty: true, isShowOnlyShortMovies },
-    ));
-  }, [savedMovies, query, isShowOnlyShortMovies]);
-
   return (
     <div className="App">
       <div className="page-container">
@@ -315,32 +254,24 @@ function App() {
               exact
               path="/movies"
               loggedIn={loggedIn}
-              isLoading={isLoading}
               loadingError={loadingError}
               component={Movies}
               savedMovies={savedMovies}
-              moviesData={filterMovies}
-              onSubmit={searchHandler}
+              moviesData={allMovies}
               onSaveMovie={addToBookmarks}
               onDeleteSavedMovie={removeFromBookmark}
               isMovieAdded={isMovieAdded}
-              isSearchEmptyError={isSearchEmptyError}
-              onShortMoviesCheckboxClick={handleShortMoviesCheckboxClick}
             />
 
             <ProtectedRoute
               exact
               path="/saved-movies"
               loggedIn={loggedIn}
-              isLoading={isLoading}
               loadingError={loadingError}
               component={SavedMovies}
-              savedMovies={filterSavedMovies}
-              movies={savedMovies}
-              onSubmit={searchHandler}
+              savedMovies={savedMovies}
               onDeleteSavedMovie={removeFromBookmark}
               isMovieAdded={isMovieAdded}
-              onShortMoviesCheckboxClick={handleShortMoviesCheckboxClick}
               getSavedMoviesResStatus={true}
             />
 
@@ -356,13 +287,19 @@ function App() {
               currentUser={currentUser}
             />
 
-            <Route path="/signup">
-              <Register signUpHandler={signUpHandler} isSignUpError={isSignUpError} />
-            </Route>
+            {loggedIn ? (
+              <Redirect from="/(signin|signup)" to="/" />
+            ) : (
+              <>
+                <Route path="/signup">
+                  <Register signUpHandler={signUpHandler} isSignUpError={isSignUpError} />
+                </Route>
 
-            <Route path="/signin">
-              <Login signInHandler={signInHandler} error={signInErrorMessage} />
-            </Route>
+                <Route path="/signin">
+                  <Login signInHandler={signInHandler} error={signInErrorMessage} />
+                </Route>
+              </>
+            )}
 
             <Route component={NotFound} />
           </Switch>
