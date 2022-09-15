@@ -7,108 +7,80 @@ import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 import SearchForm from '../SearchForm/SearchForm';
+import useSearchMovies from '../../effects/useSearchMovies';
 
-import ShowMoreButton from '../ShowMoreButton/ShowMoreButton';
+const getError = (loadingError, isSearchEmptyError, isEmptyListError) => {
+  if (loadingError) {
+    return loadingError;
+  }
 
-import MovieCardImage from '../../images/MoviesCard/movie-card-image.png';
-import MovieCardImageTwo from '../../images/MoviesCard/movie-card-image2.png';
+  if (isSearchEmptyError) {
+    return 'Нужно ввести ключевое слово';
+  }
 
-function Movies() {
+  if (isEmptyListError) {
+    return 'Ничего не найдено';
+  }
+
+  return null;
+};
+
+function Movies({
+  moviesData,
+  onSaveMovie,
+  onDeleteSavedMovie,
+  loadingError,
+}) {
   const location = useLocation();
+  const {
+    query,
+    filterMovies,
+    isLoading,
+    isSearchEmptyError,
+    isShowOnlyShortMovies,
+    handleSearch,
+    handleShortMoviesCheckboxClick,
+  } = useSearchMovies({ movies: moviesData, sholdUseStorage: true });
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isSearchTouched, setIsSearchTouched] = React.useState(false);
+  const isEmptyListError = isSearchTouched && moviesData.length === 0;
+  const error = React.useMemo(() => {
+    return getError(loadingError, isSearchEmptyError, isEmptyListError);
+  }, [loadingError, isSearchEmptyError, isEmptyListError]);
 
-  const MOVIES_CARD_LIST_DATA = [
-    {
-      id: 1,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: true,
-    },
-    {
-      id: 2,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImageTwo,
-      isMarked: false,
-      isShortFilm: false,
-    },
-    {
-      id: 3,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: true,
-      isShortFilm: true,
-    },
-    {
-      id: 4,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImageTwo,
-      isMarked: true,
-      isShortFilm: false,
-    },
-    {
-      id: 5,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: false,
-    },
-    {
-      id: 6,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImageTwo,
-      isMarked: true,
-      isShortFilm: false,
-    },
-    {
-      id: 7,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: true,
-      isShortFilm: true,
-    },
-  ];
+  const handleSubmit = (data) => {
+    handleSearch(data);
 
-  React.useEffect(() => {
-    const loadingDataTimeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-
-    return () => {
-      clearTimeout(loadingDataTimeout);
-    };
-  }, []);
+    if (!isSearchTouched) {
+      setIsSearchTouched(true);
+    }
+  };
 
   return (
     <main>
-      <SearchForm />
-      {isLoading ? (
+      <SearchForm
+        query={query}
+        onSubmit={handleSubmit}
+        onShortMoviesCheckboxClick={handleShortMoviesCheckboxClick}
+        isShowOnlyShortMovies={isShowOnlyShortMovies}
+      />
+      {isLoading && (
         <Preloader />
-      ) : (
-        <>
-          <MoviesCardList
-            data={MOVIES_CARD_LIST_DATA}
-            locationPathname={location.pathname}
-          />
-          <ShowMoreButton
-            onClick={() => console.log('Show more')}
-          />
-        </>
+      )}
+      {error && (
+        <div
+          className="movies-card-list-error"
+        >
+          {error}
+        </div>
+      )}
+      {!error && (
+        <MoviesCardList
+          data={filterMovies}
+          locationPathname={location.pathname}
+          onSaveMovie={onSaveMovie}
+          onDeleteSavedMovie={onDeleteSavedMovie}
+        />
       )}
     </main>
   );

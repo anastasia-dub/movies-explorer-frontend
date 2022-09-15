@@ -4,58 +4,92 @@ import MainArticle from '../MainArticle/MainArticle';
 
 import FavoritesButton from '../FavoritesButton/FavoritesButton';
 
+import convertTime from '../../utils/convertTime';
+
+import getFullImageUrl from '../../utils/getFullImageUrl';
+
+import getTrailerUrl from '../../utils/getTrailerUrl';
+
 function MoviesCard({
   data,
   locationPathname,
+  onSaveMovie,
+  onDeleteSavedMovie,
 }) {
-  const [isMarked, setIsMarked] = React.useState(data.isMarked);
+  const [movieData] = React.useState({
+    country: data.country || 'Нет данных',
+    director: data.director || 'Нет данных',
+    duration: data.duration || 0,
+    year: data.year || 'Нет данных',
+    description: data.description || 'Нет данных',
+    image: getFullImageUrl(data),
+    trailerLink: getTrailerUrl(data),
+    nameRU: data.nameRU || 'Нет данных',
+    nameEN: data.nameEN || 'Нет данных',
+    movieId: data.id,
+    thumbnail: getFullImageUrl(data),
+  });
 
-  const handleMarkMovieCard = () => {
-    setIsMarked(!isMarked);
+  const handleClickFavoriteButton = () => {
+    if (locationPathname === '/movies') {
+      if (!data.saved) {
+        onSaveMovie(movieData);
+      } else {
+        onDeleteSavedMovie(movieData);
+      }
+    } else if (locationPathname === '/saved-movies') {
+      onDeleteSavedMovie(movieData);
+    }
   };
 
   return (
     <MainArticle
-      id={data.id}
-      className="movies-card-article"
+      id={data._id || movieData.movieId}
+      className='movies-card-article'
     >
       <MainArticle.Section
-        className="movies-card-article__image-section"
+        className='movies-card-article__image-section'
       >
-        <img
-          className="movies-card-article__image"
-          alt={data.imageAlt}
-          src={data.imageSrc}
-        />
+        <a
+          href={movieData.trailerLink}
+          target='_blank'
+          aria-label={`Открыть трейлер фильма "${movieData.nameRU}" на youtube.com`} rel="noreferrer"
+
+        >
+          <img
+            className='movies-card-article__image'
+            alt={movieData.nameRU || movieData.nameEN}
+            src={movieData.image}
+          />
+        </a>
       </MainArticle.Section>
       <MainArticle.Header
-        className="movies-card-article__header"
+        className='movies-card-article__header'
       >
         <div
-          className="movies-card-article__container"
+          className='movies-card-article__text-container'
         >
           <h2
-            className="movies-card-article__title"
+            className='movies-card-article__title'
           >
-            {data.title}
+            {movieData.nameRU || movieData.nameEN}
           </h2>
           <FavoritesButton
-          className="movies-card-article__favorite-button"
-          onClick={handleMarkMovieCard}
+          className='movies-card-article__favorite-button'
+          onClick={handleClickFavoriteButton}
           locationPathname={locationPathname}
-          isMarked={isMarked}
+          isSaved={data.saved}
           />
         </div>
-        <div>
-            <p
-                className="movies-card-article__subtitle"
-              >
-                {data.subtitle}
-            </p>
+        <div className='movies-card-article__time'>
+          <p
+              className='movies-card-article__subtitle'
+          >
+              {convertTime(movieData.duration)}
+          </p>
         </div>
       </MainArticle.Header>
     </MainArticle>
-
   );
 }
 

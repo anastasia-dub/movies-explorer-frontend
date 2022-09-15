@@ -4,51 +4,80 @@ import { useLocation } from 'react-router-dom';
 
 import SearchForm from '../SearchForm/SearchForm';
 
+import Preloader from '../Preloader/Preloader';
+
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-import MovieCardImage from '../../images/MoviesCard/movie-card-image.png';
-import MovieCardImageTwo from '../../images/MoviesCard/movie-card-image2.png';
+import useSearchMovies from '../../effects/useSearchMovies';
 
-function SavedMovies() {
+const getError = (loadingError, isEmptyListError) => {
+  if (loadingError) {
+    return loadingError;
+  }
+
+  if (isEmptyListError) {
+    return 'Ничего не найдено';
+  }
+
+  return null;
+};
+
+function SavedMovies({
+  onDeleteSavedMovie,
+  savedMovies,
+  loadingError,
+}) {
+  const [isSearchTouched, setIsSearchTouched] = React.useState(false);
+  const isEmptyListError = isSearchTouched && savedMovies.length === 0;
+
+  const {
+    query,
+    filterMovies,
+    isLoading,
+    isShowOnlyShortMovies,
+    handleSearch,
+    handleShortMoviesCheckboxClick,
+  } = useSearchMovies({ movies: savedMovies, noFilterEmpty: true });
+
+  const handleSubmit = (data) => {
+    handleSearch(data);
+
+    if (!isSearchTouched) {
+      setIsSearchTouched(true);
+    }
+  };
+
+  const error = React.useMemo(() => {
+    return getError(loadingError, isEmptyListError);
+  }, [loadingError, isEmptyListError]);
+
   const location = useLocation();
-
-  const MOVIES_CARD_LIST_DATA = [
-    {
-      id: 1,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: true,
-    },
-    {
-      id: 2,
-      title: '33 слова о дизайне»',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImageTwo,
-      isMarked: false,
-      isShortFilm: false,
-    },
-    {
-      id: 5,
-      title: '33 слова о дизайне',
-      subtitle: '1ч 42м',
-      imageAlt: 'кадр из фильма',
-      imageSrc: MovieCardImage,
-      isMarked: false,
-      isShortFilm: false,
-    },
-  ];
 
   return (
     <main>
-      <SearchForm />
-      <MoviesCardList
-        data={MOVIES_CARD_LIST_DATA}
-        locationPathname={location.pathname}
+      <SearchForm
+        query={query}
+        onSubmit={handleSubmit}
+        onShortMoviesCheckboxClick={handleShortMoviesCheckboxClick}
+        isShowOnlyShortMovies={isShowOnlyShortMovies}
       />
+       {isLoading && (
+        <Preloader />
+       )}
+      {error && (
+        <div
+          className="movies-card-list-error"
+        >
+          {error}
+        </div>
+      )}
+      {!error && (
+        <MoviesCardList
+          data={filterMovies}
+          locationPathname={location.pathname}
+          onDeleteSavedMovie={onDeleteSavedMovie}
+        />
+      )}
     </main>
   );
 }

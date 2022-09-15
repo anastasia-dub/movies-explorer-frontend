@@ -20,7 +20,8 @@
         "no-shadow": "off",
         "react/display-name": "off",
         "react/prop-types": "off",
-        "eslint-disable-next-line": "off"
+        "eslint-disable-next-line": "off",
+        "no-param-reassign": "off"
 
     },
     "globals": {

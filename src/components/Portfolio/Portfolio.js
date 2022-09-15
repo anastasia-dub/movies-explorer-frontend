@@ -3,8 +3,6 @@ import React from 'react';
 import PortfolioLinks from '../PortfolioLinks/PortfolioLinks';
 
 function Portfolio() {
-  const PORTFOLIO_TITLE = 'Портфолио';
-
   const PORTFOLIO_ITEMS = [
     {
       id: 1,
@@ -38,7 +36,7 @@ function Portfolio() {
   return (
     <PortfolioLinks
       items={PORTFOLIO_ITEMS}
-      portfolioTitle={PORTFOLIO_TITLE}
+      portfolioTitle='Портфолио'
       styleSettings={PORTFOLIO_STYLE_SETTINGS}
     />
   );

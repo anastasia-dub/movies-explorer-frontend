@@ -4,13 +4,9 @@ function ProfileSignoutButton({
   onSignOut,
   title,
 }) {
-  const STYLE_SETTINGS = {
-    button: 'profile-signout-button',
-  };
-
   return (
     <button
-      className={STYLE_SETTINGS.button}
+      className='profile-signout-button'
       onClick={onSignOut}
     >
       {title}
